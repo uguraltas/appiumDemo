@@ -19,72 +19,47 @@ public class BaseSetup {
 
 
     @BeforeMethod
-    public void setup () throws MalformedURLException {
+    public void setup() throws MalformedURLException {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("deviceName", "Nexus 5");
         caps.setCapability("udid", "emulator-5554"); //DeviceId from "adb devices" command
         caps.setCapability("platformName", "Android");
         caps.setCapability("platformVersion", "7.0");
         caps.setCapability("appPackage", "com.pozitron.hepsiburada");
-        caps.setCapability("appActivity","com.hepsiburada.ui.startup.SplashActivity");
-        caps.setCapability("noReset","false");
-        driver = new AndroidDriver<MobileElement>(new URL("http://localhost:4723/wd/hub"),caps);
+        caps.setCapability("appActivity", "com.hepsiburada.ui.startup.SplashActivity");
+        caps.setCapability("noReset", "false");
+        caps.setCapability("autoDissmissAlerts", "true");
+        driver = new AndroidDriver<>(new URL("http://localhost:4723/wd/hub"), caps);
         wait = new WebDriverWait(driver, 30);
     }
 
     @Test
-    public void loginTest () throws InterruptedException {
-
-//        dialogsCloseAndCloseAnimation();
-        loginAccount();
+    public void searchTest()  {
+        search();
     }
 
-    public void loginAccount() throws InterruptedException {
+    public void search()  {
 
-        WebElement el1 =  wait.until(ExpectedConditions.elementToBeClickable(By.id("imageViewLogo")));
-        el1.click();
-//        WebElement loginSimgesi =  wait.until(ExpectedConditions.elementToBeClickable(By.id("account_icon")));
-//        loginSimgesi.click();
-//        WebElement el3 =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//android.view.ViewGroup[@content-desc=\"account_menu_button_1\"]/android.view.ViewGroup/android.widget.Button")));
-//        el3.click();
-
-
+        WebElement logo = wait.until(ExpectedConditions.elementToBeClickable(By.id("imageViewLogo")));
+        logo.click();
         WebElement arama = wait.until(ExpectedConditions.elementToBeClickable(By.id("textViewSearchBox")));
         arama.click();
         WebElement aramaText = wait.until(ExpectedConditions.elementToBeClickable(By.id("etACBSearchBox")));
         aramaText.click();
-        aramaText.sendKeys("telefon");
-        WebElement aramaTextbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/android.view.ViewGroup/android.widget.LinearLayout/android.widget.LinearLayout/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/android.widget.TextView")));
+//        WebElement popup = wait.until(ExpectedConditions.elementToBeClickable(By.id("com_appboy_inappmessage_modal_close_button")));
+//        popup.click();
+        aramaText.sendKeys("siyah şapka");
+        WebElement aramaTextbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//android.widget.TextView")));
         aramaTextbox.click();
-
-
-
-//        WebElement account = wait.until(ExpectedConditions.elementToBeClickable(By.id("account_icon")));
-//        account.click();
-//        WebElement userLogin = wait.until(ExpectedConditions.elementToBeClickable(By.id("llUserAccountLogin")));
-//        userLogin.click();
-//        WebElement loginEmail = wait.until(ExpectedConditions.elementToBeClickable(By.id("etLoginEmail")));
-//        loginEmail.sendKeys("mb@mb.com");
-//        WebElement loginPassword = wait.until(ExpectedConditions.elementToBeClickable(By.id("etLoginPassword")));
-//        loginPassword.sendKeys("123456");
-//        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnLoginLogin")));
-//        loginButton.click();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ie) {
+        }
     }
 
-    public void dialogsCloseAndCloseAnimation() throws InterruptedException {
-        MobileElement el1 = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup[2]");
-        el1.click();
-//        WebElement noButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("button2")));
-//        noButton.click();
-//        WebElement okButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("button1")));
-//        okButton.click();
-//        //Click animation close buton
-//        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.id("close_button")));
-//        element.click();
-    }
 
     @AfterMethod
-    public void teardown(){
+    public void teardown() {
         driver.quit();
     }
 }
